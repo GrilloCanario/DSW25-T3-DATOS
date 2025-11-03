@@ -1,0 +1,20 @@
+{
+    "name": "dsw/blog",
+    "description": "Tema3: acceso a Datos.Ejmplo Blog",
+    "type": "project",
+    "require": {
+        "vlucas/phpdotenv": "^5.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "Dsw\\Blog\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Pedro Barrera",
+            "email": "pedrodbarrerafdez@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable"
+}
