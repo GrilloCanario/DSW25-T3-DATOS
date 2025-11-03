@@ -1,0 +1,19 @@
+{
+    "sqltools.connections": [
+        {
+            "mysqlOptions": {
+                "authProtocol": "default",
+                "enableSsl": "Disabled"
+            },
+            "ssh": "Disabled",
+            "previewLimit": 50,
+            "server": "db",
+            "port": 3306,
+            "driver": "MariaDB",
+            "name": "tema3con",
+            "database": "tema3db",
+            "username": "user",
+            "password": "dsw2025tema3"
+        }
+    ]
+}

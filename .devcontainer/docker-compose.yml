@@ -1,0 +1,38 @@
+# .devcontainer/docker-compose.yml
+version: '3.8'
+
+services:
+  # Contenedor para la aplicación PHP
+  app:
+    # Construye la imagen a partir de un Dockerfile en el mismo directorio
+    # Esto nos da más flexibilidad para añadir extensiones en el futuro.
+    build:
+      context: .
+      dockerfile: Dockerfile
+    # Monta el directorio de trabajo actual en /workspace
+    # 'cached' mejora el rendimiento en macOS y Windows.
+    volumes:
+      - ..:/workspace:cached
+    # Comando por defecto para mantener el contenedor en ejecución.
+    # El servidor PHP se iniciará con 'postStartCommand' en devcontainer.json.
+    command: sleep infinity
+
+  # Contenedor para la base de datos MariaDB
+  db:
+    image: mariadb:10.11 # Usa una versión estable de MariaDB
+    # Reinicia el contenedor automáticamente si se detiene
+    restart: unless-stopped
+    # Monta un volumen para que los datos de la base de datos persistan
+    # entre reinicios del contenedor.
+    volumes:
+      - mariadb-data:/var/lib/mysql
+    # Variables de entorno para configurar MariaDB
+    environment:
+      MARIADB_ROOT_PASSWORD: dsw2025tema3 # Cambia esto por una contraseña segura
+      MARIADB_DATABASE: tema3db
+      MARIADB_USER: user
+      MARIADB_PASSWORD: dsw2025tema3 # Cambia esto por una contraseña segura
+
+# Define el volumen para la persistencia de los datos de MariaDB
+volumes:
+  mariadb-data:
