@@ -1,53 +1,19 @@
 <?php
-//- Pagina de prueba. Se debe eliminar de producción:
-
-use Dotenv\Dotenv;
+// Tabla con todos los usuarios
 
 require_once '../vendor/autoload.php';
 
-//- Leer variables de entorno
+require_once 'conexion.php';
 
-$dotenv = Dotenv::createImmutable(__DIR__ . '/..');
-$dotenv->load();
+// Consulta SQL o manipulación del a base de datos.
 
-$host = $_ENV['DB_HOST'];
-$db = $_ENV['DB_NAME'];
-$user = $_ENV['DB_USER'];
-$password = $_ENV['DB_PASS'];
-//! Ejemplo de error: $password = '1234'; --> Entraría en el CATCH
-$charset = $_ENV['DB_CHARSET'];
-
-//- Hacer la conexión a la BD
-//- Data Source Name (DSN)
-$dsn = "mysql:host=$host;dbname=$db;charset=$charset";
-
-$options = [
-    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-    PDO::ATTR_EMULATE_PREPARES => false,
-    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
-];
-
-try{
-    $pdo = new PDO($dsn, $user, $password, $options);
-
-} catch (PDOException $e) {
-    echo "Error en la conexión";
-    //* printf("<p>%s</p>)", $e->getMessage());
-    die();
-}
-
- //* echo "Conexión Correcta";
-
-//- Consulta SQL o manipulación de la base de datos
-
-//- Mostrar todos los usuarios
-
-$sql = "SELECT id, name, email, register_date FROM users"; 
+$sql = "SELECT id, name, email, register_date FROM users";
 $stmt = $pdo->prepare($sql);
 
 $stmt->execute();
 
 $users = $stmt->fetchAll();
+
 ?>
 
 <!DOCTYPE html>
@@ -60,13 +26,16 @@ $users = $stmt->fetchAll();
         table {
             border-collapse: collapse;
         }
-        td, th{
+        td, th {
             border: 1px solid blue;
             padding: 5px;
         }
     </style>
 </head>
 <body>
+    <p>
+        <a href="create.php">Crear nuevo usuario</a>
+    </p>
     <table>
         <thead>
             <tr>
@@ -78,28 +47,32 @@ $users = $stmt->fetchAll();
             </tr>
         </thead>
         <tbody>
-            <?php
-                foreach($users as $user){
-                    printf('<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td>',
-                    $user['id'],
-                    $user['name'],
-                    $user['email'],
-                    $user['register_date']
-                    );
-                    printf('<td><a href="delete.php?id=%s">Eliminar</a></td>',
-                    $user['id']
-                    );
-                    echo "</tr>";
-                }
-            ?>
+<?php
+    foreach($users as $user) {
+        echo "<tr>";
+        printf('<td>%s</td> <td>%s</td> <td>%s</td> <td>%s</td>',
+            $user['id'],
+            $user['name'],
+            $user['email'],
+            $user['register_date']
+        );
+        echo "<td>";
+        printf('<a href="edit.php?id=%s">Editar</a> | ',
+             $user['id']
+        );
+        printf('<a href="delete.php?id=%s">Eliminar</a>',
+             $user['id']
+        );
+        echo "</td>";
+        echo "</tr>";
+    }
+?>
         </tbody>
     </table>
 </body>
 </html>
-
 <?php
-//- Desconexión
+
+// Desconexión
 $stmt = null;
 $pdo = null;
-
-?>

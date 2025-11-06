@@ -1,9 +1,5 @@
 <?php
-// Página de prueba. Se debe eliminar de producción. 
-
 use Dotenv\Dotenv;
-
-require_once '../vendor/autoload.php';
 
 // Leer variables de entono
 
@@ -37,30 +33,3 @@ try {
     printf("<p>%s</p>", $e->getMessage());
     die();
 }
-
-//echo "Conexión correcta";
-
-
-// Consulta SQL o manipulación del a base de datos.
-
-// Usuario por ID.
-$userId = '2';
-
-$sql = "SELECT id, name, email, register_date FROM users WHERE id = :id";
-$stmt = $pdo->prepare($sql);
-
-$stmt->execute(['id' => $userId]);
-
-$user = $stmt->fetch();
-
-echo "<pre>";
-print_r($user);
-echo "</pre>";
-printf('<p>Id: %s</p>', $user['id']);
-printf('<p>Nombre: %s</p>', $user['name']);
-printf('<p>Email: %s</p>', $user['email']);
-printf('<p>Fecha registro: %s</p>', $user['register_date']);
-
-// Desconexión
-$stmt = null;
-$pdo = null;
