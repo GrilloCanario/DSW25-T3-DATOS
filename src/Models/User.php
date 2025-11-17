@@ -1,5 +1,5 @@
 <?php
-namespace Dsw\Blog;
+namespace Dsw\Blog\Models;
 
 use DateTime;
 

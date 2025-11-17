@@ -1,6 +1,7 @@
 <?php
-namespace Dsw\Blog;
+namespace Dsw\Blog\DAO;
 
+use Dsw\Blog\Models\User;
 use PDO;
 
 class UserDao {
